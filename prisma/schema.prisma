@@ -49,12 +49,13 @@ model Account {
 }
 
 model Movement {
-  id      String   @id @default(uuid())
+  id      String       @id @default(uuid())
   concept String
   amount  Float
-  date    DateTime @default(now())
+  date    DateTime     @default(now())
   userId  String
-  user    User     @relation(fields: [userId], references: [id])
+  user    User         @relation(fields: [userId], references: [id])
+  type    MovementType @default(INCOME)
 }
 
 model Session {
@@ -76,4 +77,9 @@ model VerificationToken {
 enum Role {
   USER
   ADMIN
+}
+
+enum MovementType {
+  INCOME
+  EXPENSE
 }

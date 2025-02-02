@@ -32,6 +32,7 @@ export const authOptions: AuthOptions = {
     // Storing session data in the database
     strategy: "database",
   },
+
   callbacks: {
     /**
      * Callback to handle session data.
@@ -64,9 +65,39 @@ export const authOptions: AuthOptions = {
       // Adding user id and role to the token object
       if (user) {
         token.id = user.id;
-        token.role = user.role; // This line might cause an error if 'role' doesn't exist on 'user'
+        token.role = user.role || "USER"; // This line might cause an error if 'role' doesn't exist on 'user'
       }
       return token;
+    },
+
+    /**
+     * Handles user sign-in process.
+     *
+     * @param {Object} params - The parameters for the sign-in function.
+     * @param {Object} params.user - The user object from the authentication provider.
+     * @param {Object} params.account - The account object from the authentication provider.
+     * @returns {Promise<boolean>} - Returns true if the sign-in process is successful.
+     */
+    async signIn({ user, account }) {
+      if (account?.provider === "auth0") {
+        // Buscar si el usuario ya existe en la DB
+        let existingUser = await prisma.user.findUnique({
+          where: { email: user.email as string }, // Type assertion to avoid TypeScript error
+        });
+
+        // Si el usuario no existe, lo creamos
+        if (!existingUser) {
+          existingUser = await prisma.user.create({
+            data: {
+              email: user.email as string, // Type assertion to avoid TypeScript error
+              name: user.name,
+              image: user.image,
+              role: "USER", // O asignar un rol por defecto
+            },
+          });
+        }
+      }
+      return true;
     },
   },
   // Secret needed to sign the tokens

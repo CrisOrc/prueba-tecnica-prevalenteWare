@@ -6,6 +6,11 @@ export const typeDefs = gql`
     ADMIN
   }
 
+  enum MovementType {
+    INCOME
+    EXPENSE
+  }
+
   type User {
     id: String!
     email: String
@@ -21,18 +26,32 @@ export const typeDefs = gql`
     date: String!
     userId: String!
     user: User!
+    type: MovementType!
   }
 
   type Query {
-    # Obtener todos los movimientos
     movements: [Movement!]!
 
-    # Obtener todos los usuarios (solo rol=ADMIN)
     users: [User!]!
+    user(id: String!): User!
+  }
+
+  input UpdateUserInput {
+    name: String
+    role: Role
+  }
+
+  input CreateMovementInput {
+    concept: String!
+    amount: Float!
+    userId: String!
+    date: String!
+    type: MovementType!
   }
 
   type Mutation {
-    # Crea un nuevo Movement, asignado al usuario logueado
-    createMovement(concept: String!, amount: Float!): Movement!
+    createMovement(input: CreateMovementInput!): Movement!
+
+    updateUser(id: String!, input: UpdateUserInput!): User!
   }
 `;
