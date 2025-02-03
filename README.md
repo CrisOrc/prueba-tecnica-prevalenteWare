@@ -1,36 +1,226 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Here's the `README.md` file with clear instructions on how to run the project locally and deploy it on Vercel, including detailed explanations on obtaining each of the `.env` variables:
 
-## Getting Started
+````markdown
+# FinFlow - Income and Expense Management System
 
-First, run the development server:
+FinFlow is a web application developed with **Next.js, GraphQL, Prisma, and Auth0** that allows users to manage financial incomes and expenses. It includes user authentication with **ADMIN** and **USER** roles, financial report generation, and a design optimized with **ShadCN and TailwindCSS**.
+
+---
+
+## 📌 Features
+
+- **Secure authentication with Auth0 and NextAuth**
+- **User management (ADMIN)**
+- **Recording of incomes and expenses associated with users**
+- **Viewing and filtering of movements according to user role**
+- **Financial reports with charts and CSV export**
+- **Modern design with ShadCN and TailwindCSS**
+- **GraphQL implementation with Apollo Client**
+
+---
+
+## 🚀 Installation and Local Execution
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/prueba-tecnica-test.git
+cd prueba-tecnica-test
+```
+````
+
+### 2️⃣ Configure Environment Variables
+
+Create a `.env` file in the root of the project and fill in the following values:
+
+```env
+NEXTAUTH_SECRET=your_nextauth_secret
+AUTH0_CLIENT_ID=your_auth0_client_id
+AUTH0_CLIENT_SECRET=your_auth0_client_secret
+AUTH0_ISSUER=https://your-domain.auth0.com/
+DATABASE_URL=postgresql://user:password@localhost:5432/your_db
+```
+
+**How to Obtain Each Variable:**
+
+- **NEXTAUTH_SECRET**: This is a secret key used by NextAuth.js to encrypt session data. You can generate a random string using tools like [RandomKeygen](https://randomkeygen.com/) or by running `openssl rand -base64 32` in your terminal.
+
+- **AUTH0_CLIENT_ID and AUTH0_CLIENT_SECRET**:
+
+  1. Log in to your [Auth0 dashboard](https://manage.auth0.com/).
+  2. Navigate to the "Applications" section.
+  3. Select your application or create a new one.
+  4. In the application settings, you'll find the **Client ID** and **Client Secret**. ([auth0.com](https://auth0.com/docs/get-started/applications/application-settings?utm_source=chatgpt.com))
+
+- **AUTH0_ISSUER**: This is your Auth0 domain. It usually follows the format `https://your-domain.auth0.com/`. Replace `your-domain` with your Auth0 tenant domain.
+
+- **DATABASE_URL**: This is the connection string for your PostgreSQL database. It follows this structure:
+
+  ```
+  postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA
+  ```
+
+  Replace:
+
+  - `USER`: Your database username.
+  - `PASSWORD`: Your database password.
+  - `HOST`: The host where your database is running (e.g., `localhost`).
+  - `PORT`: The port your database is listening on (default for PostgreSQL is `5432`).
+  - `DATABASE`: The name of your database.
+  - `SCHEMA`: The schema you're using (default is `public`).
+
+  For example: `postgresql://admin:admin@localhost:5432/finflow?schema=public`
+
+  Ensure PostgreSQL is installed and running on your machine, and that you've created the specified database. ([prisma.io](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-node-postgresql?utm_source=chatgpt.com))
+
+### 3️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+### 4️⃣ Generate the Database with Prisma
+
+```bash
+npx prisma migrate dev --name init
+```
+
+This will create the database structure defined in `prisma/schema.prisma`.
+
+### 5️⃣ Start the Local Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The project will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📤 Deployment on Vercel
 
-## Learn More
+### 1️⃣ Install Vercel CLI (if you don't have it)
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install -g vercel
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2️⃣ Configure Vercel and Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+vercel login
+vercel
+```
 
-## Deploy on Vercel
+Follow the instructions and select the appropriate options.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3️⃣ Configure Environment Variables on Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In the **Vercel** dashboard, go to **Project Settings > Environment Variables** and add the environment variables defined in the `.env` file.
+
+### 4️⃣ Deploy to Production
+
+```bash
+vercel deploy --prod
+```
+
+Your application will be available at a domain generated by Vercel.
+
+---
+
+## 📁 Project Structure
+
+````bash
+📁prueba-tecnica-test
+├── 📁prisma            # Prisma database schema
+│   └── schema.prisma   # Defines the database schema using Prisma
+├── 📁public            # Public files accessible by the client
+├── 📁src               # Main source code directory
+│   ├── 📁__tests__     # Unit tests
+│   │   ├── prisma.test.ts      # Tests related to Prisma
+│   │   ├── resolvers.test.ts   # Tests for GraphQL resolvers
+│   ├── 📁app           # Application routes and main pages
+│   │   ├── 📁api
+│   │   │   ├── 📁auth
+│   │   │   │   ├── 📁[...nextauth]
+│   │   │   │   │   └── route.ts   # NextAuth route configuration
+│   │   │   ├── 📁graphql
+│   │   │   │   └── route.ts       # Main route for GraphQL API
+│   │   ├── favicon.ico            # Favicon for the application
+│   │   ├── globals.css            # Global CSS styles
+│   │   ├── 📁home
+│   │   │   └── page.tsx           # Home page component
+│   │   ├── layout.tsx             # Main layout component
+│   │   ├── 📁login
+│   │   │   └── page.tsx           # Login page component
+│   │   ├── page.tsx               # Default page component
+│   │   ├── 📁reports
+│   │   │   └── page.tsx           # Reports page component
+│   │   ├── 📁transactions
+│   │   │   ├── 📁create
+│   │   │   │   └── page.tsx       # Create transaction page component
+│   │   │   └── page.tsx           # Transactions page component
+│   │   ├── 📁users
+│   │   │   ├── 📁[id]
+│   │   │   │   ├── 📁edit
+│   │   │   │   │   └── page.tsx   # Edit user page component
+│   │   │   └── page.tsx           # Users page component
+
+│   ├── 📁components    # Reusable UI components
+│   │   ├── 📁buttons
+│   │   │   └── ExportCSVButton.tsx # Button for exporting data to CSV
+│   │   ├── 📁forms
+│   │   │   ├── AddMovementForm.tsx # Form for adding financial movements
+│   │   │   ├── EditUserForm.tsx    # Form for editing user details
+│   │   ├── 📁home
+│   │   │   └── HomeComponent.tsx   # Main component for the home page
+│   │   ├── 📁homeCards
+│   │   │   └── HomeCards.tsx       # Cards displayed on the home page
+│   │   ├── 📁login
+│   │   │   └── Login.tsx           # Login form component
+│   │   ├── 📁navbar
+│   │   │   └── Navbar.tsx          # Navigation bar component
+│   │   ├── 📁select
+│   │   │   └── UserSelect.tsx      # Dropdown for selecting users
+│   │   ├── 📁tables
+│   │   │   ├── MovementsTable.tsx  # Table displaying financial movements
+│   │   │   ├── UsersTable.tsx      # Table displaying users
+│   │   ├── 📁ui         # General UI components
+
+│   ├── 📁graphql       # GraphQL resolvers and type definitions
+│   │   ├── resolvers.ts        # GraphQL resolvers
+│   │   ├── resolvers.types.ts  # Types for GraphQL resolvers
+│   │   ├── typeDef.ts          # GraphQL type definitions
+│   ├── 📁hooks         # Custom React hooks
+│   │   └── use-toast.ts        # Hook for toast notifications
+│   ├── 📁lib           # Library files for configuration and utilities
+│   │   ├── apollo-client.ts    # Apollo Client configuration
+│   │   ├── auth.ts             # Authentication configuration
+│   │   ├── prisma.ts           # Prisma client configuration
+│   │   ├── utils.ts            # General utility functions
+│   ├── 📁utils         # Utility functions specific to the project
+│   │   ├── movements.ts        # Utility functions for financial movements
+│   │   ├── users.ts            # Utility functions for user management
+├── .env                # Environment variables
+├── .gitignore          # Git ignore file
+├── components.json     # Component configuration
+├── eslint.config.mjs   # ESLint configuration
+├── jest.config.ts      # Jest configuration for testing
+├── next-env.d.ts       # TypeScript definitions for Next.js
+├── next.config.ts      # Next.js configuration
+├── package-lock.json   # Lock file for npm dependencies
+├── package.json        # Project dependencies and scripts
+├── postcss.config.mjs  # PostCSS configuration
+├── README.md           # Project instructions
+├── tailwind.config.ts  # Tailwind CSS configuration
+└── tsconfig.json       # TypeScript configuration
+
+---
+
+## 🧪 Tests
+
+To run unit tests:
+
+```bash
+npm run test
+````
