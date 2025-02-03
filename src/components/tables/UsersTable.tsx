@@ -4,18 +4,27 @@ import { useQuery } from "@apollo/client";
 import { GET_USERS } from "@/utils/users";
 import { DataTable } from "@/components/ui/data-table";
 import { DataTableRowActions } from "../ui/dataRowAction";
+import { Row } from "@tanstack/react-table";
 
 /**
  * Columns configuration for the DataTable component.
  * Defines the columns for the users table including actions.
  */
+
+interface UserRow {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 const columns = [
   { accessorKey: "name", header: "Nombre" },
   { accessorKey: "email", header: "Correo" },
   { accessorKey: "role", header: "Rol" },
   {
     id: "actions",
-    cell: ({ row }: { row: unknown }) => <DataTableRowActions row={row} />,
+    cell: ({ row }: { row: Row<UserRow> }) => <DataTableRowActions row={row} />,
   },
 ];
 

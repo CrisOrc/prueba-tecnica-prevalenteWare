@@ -5,7 +5,19 @@ import { GET_MOVEMENTS } from "@/utils/movements";
 import { DataTable } from "@/components/ui/data-table";
 import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
-import { Movement, User } from "@prisma/client";
+import { User } from "next-auth";
+import { Movement } from "@/graphql/resolvers.types";
+import { Row } from "@tanstack/react-table";
+
+interface MovementRow {
+  id: string;
+  concept: string;
+  amount: number;
+  date: string;
+  userId: string;
+  user: User;
+  type: string;
+}
 
 /**
  * Formats a number as currency with thousand separators and a dollar sign.
@@ -60,7 +72,7 @@ export default function MovementsTable() {
     {
       accessorKey: "amount",
       header: "Monto",
-      cell: ({ row }: { row: unknown }) => {
+      cell: ({ row }: { row: Row<MovementRow> }) => {
         const amount = Number(row.getValue("amount"));
         const type = row.original.type; // "INCOME" or "EXPENSE"
 
@@ -78,7 +90,7 @@ export default function MovementsTable() {
     {
       accessorKey: "date",
       header: "Fecha",
-      cell: ({ row }: { row: unknown }) => {
+      cell: ({ row }: { row: Row<MovementRow> }) => {
         const dateValue = row.getValue("date");
         if (!dateValue) return "Sin fecha";
         return new Date(Number(dateValue)).toLocaleDateString("es-ES", {

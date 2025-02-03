@@ -3,17 +3,6 @@ import Auth0Provider from "next-auth/providers/auth0";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { AdapterUser } from "next-auth/adapters";
-import { Role } from "@prisma/client";
-
-declare module "next-auth" {
-  interface User {
-    role: Role;
-  }
-
-  interface Session {
-    user: User;
-  }
-}
 
 /**
  * Authentication options for NextAuth.

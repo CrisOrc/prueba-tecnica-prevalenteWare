@@ -1,6 +1,26 @@
 import { prisma } from "@/lib/prisma";
-import { Movement, Role, User } from "@prisma/client";
 import { CreateMovementArgs, GraphQLContext } from "./resolvers.types";
+import { Movement, Role, Session } from "@prisma/client";
+import { User } from "next-auth";
+
+declare module "next-auth" {
+  interface User {
+    role: Role;
+  }
+
+  interface Session {
+    user: User;
+  }
+}
+
+declare module "@/graphql/resolvers.types" {
+  interface context {
+    session: Session | null;
+  }
+  interface session {
+    user: User | null;
+  }
+}
 
 /**
  * GraphQL resolvers for handling queries and mutations.
