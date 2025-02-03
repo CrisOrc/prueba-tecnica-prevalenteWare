@@ -1,9 +1,21 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import UsersTable from "@/components/tables/UsersTable";
+import { useSession } from "next-auth/react";
+import { Role } from "@prisma/client";
+
+declare module "next-auth" {
+  interface User {
+    role: Role;
+  }
+
+  interface Session {
+    user: User;
+  }
+}
+
 /**
  * Users Page Component.
  *
@@ -13,11 +25,9 @@ import UsersTable from "@/components/tables/UsersTable";
  * @returns {JSX.Element} The rendered Users Page component.
  */
 export default function UsersPage() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   // Redirect if the user is not an admin
   useEffect(() => {
-    if (status === "loading") return;
-
     if (!session || session == null) {
       redirect("/login");
     }
@@ -25,7 +35,7 @@ export default function UsersPage() {
     if (session.user?.role !== "ADMIN") {
       redirect("/login"); // or wherever you prefer
     }
-  }, [session, status]);
+  }, [session]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
