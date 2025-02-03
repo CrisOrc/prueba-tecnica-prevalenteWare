@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { typeDefs } from "@/graphql/typeDef";
 import { resolvers } from "@/graphql/resolvers";
+import { NextApiHandler } from "next/types";
 
 /**
  * Interface defining the context for Apollo Server.
@@ -43,6 +44,5 @@ export const handler = startServerAndCreateNextHandler<
  *
  * Next.js uses these methods to handle GraphQL requests.
  */
-export const GET = handler;
-export const POST = handler;
-export default handler;
+export const GET = handler as NextApiHandler;
+export const POST = handler as NextApiHandler;
