@@ -5,44 +5,39 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { typeDefs } from "@/graphql/typeDef";
 import { resolvers } from "@/graphql/resolvers";
+import { Session } from "@prisma/client";
 
-/**
- * Interface defining the context for Apollo Server.
- * Includes the session from Auth.js (NextAuth) to verify roles, etc.
- */
+// Define the GraphQL context type
 interface GraphQLContext {
-  session: Awaited<ReturnType<typeof getServerSession>>;
+  session: Session | null;
 }
 
-/**
- * Creating an instance of ApolloServer with the provided type definitions and resolvers.
- */
-const server = new ApolloServer({
+// Create an instance of ApolloServer with the provided type definitions and resolvers
+const server = new ApolloServer<GraphQLContext>({
   typeDefs,
   resolvers,
 });
 
-/**
- * Handler to start the Apollo Server and create a Next.js handler.
- *
- * @param {NextRequest} req - The incoming request object.
- * @returns {Promise<GraphQLContext>} - The context including the session.
- */
+// Handler to start the Apollo Server and create a Next.js handler
 const handler = startServerAndCreateNextHandler<NextRequest, GraphQLContext>(
   server,
   {
     context: async () => {
-      const session = await getServerSession(authOptions);
+      const nextAuthSession = await getServerSession(authOptions);
+      const session: Session | null = nextAuthSession
+        ? {
+            id: nextAuthSession.id,
+            userId: nextAuthSession.userId,
+            sessionToken: nextAuthSession.sessionToken,
+            expires: nextAuthSession.expires.toISOString(),
+          }
+        : null;
       return { session };
     },
   },
 );
 
-/**
- * Exporting the handler for both GET and POST methods.
- *
- * Next.js uses these methods to handle GraphQL requests.
- */
+// Exporting the handler for both GET and POST methods
 export async function POST(req: NextRequest) {
   return handler(req);
 }
