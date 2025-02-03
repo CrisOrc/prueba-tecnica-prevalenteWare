@@ -43,5 +43,10 @@ const handler = startServerAndCreateNextHandler<NextRequest, GraphQLContext>(
  *
  * Next.js uses these methods to handle GraphQL requests.
  */
-export { handler as GET, handler as POST };
-export default handler;
+export async function POST(req: NextRequest) {
+  return handler(req);
+}
+
+export async function GET(req: NextRequest) {
+  return handler(req);
+}
