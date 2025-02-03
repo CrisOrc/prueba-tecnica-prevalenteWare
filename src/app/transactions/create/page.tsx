@@ -1,6 +1,7 @@
 "use client";
 
 import CreateMovementForm from "@/components/forms/AddMovementForm";
+import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
