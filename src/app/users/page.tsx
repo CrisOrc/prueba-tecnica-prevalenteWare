@@ -4,18 +4,6 @@ import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import UsersTable from "@/components/tables/UsersTable";
 import { useSession } from "next-auth/react";
-import { Role } from "@prisma/client";
-
-declare module "next-auth" {
-  interface User {
-    role: Role;
-  }
-
-  interface Session {
-    user: User;
-  }
-}
-
 /**
  * Users Page Component.
  *

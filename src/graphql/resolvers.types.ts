@@ -1,5 +1,6 @@
-import { MovementType, Role, Session as PrismaSession } from "@prisma/client";
+import { MovementType, Role, PrismaClient } from "@prisma/client";
 import { User as NextAuthUser } from "next-auth";
+import { Session as NextAuthSession } from "next-auth";
 
 /**
  * Interface defining the context for GraphQL resolvers.
@@ -7,23 +8,33 @@ import { User as NextAuthUser } from "next-auth";
  * @interface GraphQLContext
  * @property {Session | null} session - The session object, which can be null if the user is not authenticated.
  */
+
 export interface GraphQLContext {
   session: CustomSession | null;
+  prisma: PrismaClient;
+}
+
+export interface CustomSession extends NextAuthSession {
+  id: string;
+  userId: string;
+  sessionToken: string;
+  expires: string;
 }
 
 /**
  * Custom user type that includes the role property.
  */
 export interface CustomUser extends NextAuthUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
   role: Role;
 }
 
 /**
  * Custom session type that includes the custom user type.
  */
-export interface CustomSession extends PrismaSession {
-  user: CustomUser;
-}
 
 export interface Movement {
   id: string;
