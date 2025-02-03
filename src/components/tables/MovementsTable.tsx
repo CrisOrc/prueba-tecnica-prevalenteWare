@@ -5,7 +5,7 @@ import { GET_MOVEMENTS } from "@/utils/movements";
 import { DataTable } from "@/components/ui/data-table";
 import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
-import { Movement, MovementType, User } from "@prisma/client";
+import { Movement, User } from "@prisma/client";
 
 /**
  * Formats a number as currency with thousand separators and a dollar sign.

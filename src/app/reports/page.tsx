@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useSession } from "next-auth/react";
@@ -45,7 +46,7 @@ const GET_MOVEMENTS = gql`
  * @param {Movement[]} movements - The list of movements.
  * @returns {Array} - Data formatted for the bar chart.
  */
-function groupMovementsByMonth(movements: Movement[]) {
+function groupMovementsByMonth(movements: Movement[]): Array<any> {
   const monthsMap = new Map();
 
   movements.forEach((m) => {
@@ -125,7 +126,7 @@ export default function ReportsPage() {
   }, [session, status]);
 
   if (status === "loading") return <p>Cargando sesión...</p>;
-  if (!session || (session.user as any)?.role !== "ADMIN") return null;
+  if (!session || (session.user as User)?.role !== "ADMIN") return null;
   if (loading) return <p>Cargando datos del reporte...</p>;
   if (error) return <p>Error: {error.message}</p>;
 

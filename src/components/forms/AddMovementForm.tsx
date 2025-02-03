@@ -98,11 +98,13 @@ export default function CreateMovementForm() {
       form.reset();
       redirect("/transactions");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "No se pudo registrar el movimiento.",
-        variant: "destructive",
-      });
+      if (error) {
+        toast({
+          title: "Error",
+          description: "No se pudo registrar el movimiento.",
+          variant: "destructive",
+        });
+      }
     }
   }
 
