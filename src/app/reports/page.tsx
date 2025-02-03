@@ -90,10 +90,7 @@ function groupMovementsByMonth(movements: Movement[]): Array<any> {
 function handleDownloadCSV(movements: Movement[]) {
   const header = "ID,Concepto,Monto,Fecha\n";
   const rows = movements
-    .map(
-      (m) =>
-        `${m.id},${m.concept},${m.amount},${parseISO(m.date).toISOString()}`,
-    )
+    .map((m) => `${m.id},${m.concept},${m.amount},${m.date.toISOString()}`)
     .join("\n");
 
   const csvContent = header + rows;
