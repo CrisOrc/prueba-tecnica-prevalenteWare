@@ -1,6 +1,7 @@
 "use client";
 
 import EditUserForm from "@/components/forms/EditUserForm";
+import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
@@ -27,7 +28,7 @@ function EditUserPage() {
       redirect("/login");
     }
 
-    if ((session.user as any)?.role !== "ADMIN") {
+    if ((session.user as User)?.role !== "ADMIN") {
       redirect("/login"); // or wherever you prefer
     }
   }, [session, status]);

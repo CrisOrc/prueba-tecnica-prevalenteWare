@@ -3,6 +3,7 @@
 import { useQuery } from "@apollo/client";
 import { GET_MOVEMENTS } from "@/utils/movements";
 import { Button } from "@/components/ui/button";
+import { Movement } from "@prisma/client";
 
 export default function ExportCSVButton() {
   const { data } = useQuery(GET_MOVEMENTS);
@@ -12,7 +13,7 @@ export default function ExportCSVButton() {
 
     const csvContent = [
       ["Concepto", "Monto", "Fecha"],
-      ...data.movements.map((m: any) => [
+      ...data.movements.map((m: Movement) => [
         m.concept,
         m.amount,
         new Date(m.date).toLocaleDateString(),

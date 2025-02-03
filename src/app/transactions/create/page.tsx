@@ -27,7 +27,7 @@ function CreateMovement() {
       redirect("/login");
     }
 
-    if ((session.user as any)?.role !== "ADMIN") {
+    if ((session.user as User)?.role !== "ADMIN") {
       redirect("/login"); // or wherever you prefer
     }
   }, [session, status]);

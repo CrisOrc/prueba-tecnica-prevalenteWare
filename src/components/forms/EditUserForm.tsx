@@ -104,11 +104,13 @@ export default function EditUserForm() {
       });
       redirect("/users");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Could not update user information.",
-        variant: "destructive",
-      });
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Could not update user information.",
+          variant: "destructive",
+        });
+      }
     }
   }
 

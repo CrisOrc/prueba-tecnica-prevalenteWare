@@ -5,6 +5,7 @@ import { GET_MOVEMENTS } from "@/utils/movements";
 import { DataTable } from "@/components/ui/data-table";
 import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
+import { Movement, MovementType, User } from "@prisma/client";
 
 /**
  * Formats a number as currency with thousand separators and a dollar sign.
@@ -31,25 +32,25 @@ const formatCurrency = (value: number): string => {
 export default function MovementsTable() {
   const { data, loading, error } = useQuery(GET_MOVEMENTS);
   const { data: session } = useSession();
-  const userRole = (session?.user as any)?.role;
-  const userId = (session?.user as any)?.id;
+  const userRole = (session?.user as User)?.role;
+  const userId = (session?.user as User)?.id;
 
   // Filter movements based on user role
   const movements =
     userRole === "ADMIN"
       ? data?.movements || []
-      : data?.movements?.filter((m: any) => m.user.id === userId) || [];
+      : data?.movements?.filter((m: Movement) => m.user.id === userId) || [];
 
   // Calculate totals based on filtered movements
   const totalIncome =
     movements
-      ?.filter((m: any) => m.type === "INCOME")
-      ?.reduce((acc: number, m: any) => acc + Number(m.amount), 0) || 0;
+      ?.filter((m: Movement) => m.type === "INCOME")
+      ?.reduce((acc: number, m: Movement) => acc + Number(m.amount), 0) || 0;
 
   const totalExpense =
     movements
-      ?.filter((m: any) => m.type === "EXPENSE")
-      ?.reduce((acc: number, m: any) => acc + Number(m.amount), 0) || 0;
+      ?.filter((m: Movement) => m.type === "EXPENSE")
+      ?.reduce((acc: number, m: Movement) => acc + Number(m.amount), 0) || 0;
 
   const totalBalance = totalIncome - totalExpense;
 
@@ -59,7 +60,7 @@ export default function MovementsTable() {
     {
       accessorKey: "amount",
       header: "Monto",
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: unknown }) => {
         const amount = Number(row.getValue("amount"));
         const type = row.original.type; // "INCOME" or "EXPENSE"
 
@@ -77,7 +78,7 @@ export default function MovementsTable() {
     {
       accessorKey: "date",
       header: "Fecha",
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: unknown }) => {
         const dateValue = row.getValue("date");
         if (!dateValue) return "Sin fecha";
         return new Date(Number(dateValue)).toLocaleDateString("es-ES", {

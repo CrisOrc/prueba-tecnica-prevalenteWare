@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useQuery, gql } from "@apollo/client";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
-import { Movement } from "@prisma/client";
+import { Movement, User } from "@prisma/client";
 import { format, isValid, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -114,12 +114,12 @@ function handleDownloadCSV(movements: Movement[]) {
 export default function ReportsPage() {
   const { data: session, status } = useSession();
   const { data, loading, error } = useQuery(GET_MOVEMENTS, {
-    skip: !session || (session.user as any)?.role !== "ADMIN",
+    skip: !session || (session.user as User)?.role !== "ADMIN",
   });
 
   useEffect(() => {
     if (status === "loading") return;
-    if (!session || !session.user || (session.user as any)?.role !== "ADMIN") {
+    if (!session || !session.user || (session.user as User)?.role !== "ADMIN") {
       redirect("/login");
     }
   }, [session, status]);

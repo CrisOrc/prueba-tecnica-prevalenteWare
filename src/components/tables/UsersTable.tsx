@@ -15,7 +15,7 @@ const columns = [
   { accessorKey: "role", header: "Rol" },
   {
     id: "actions",
-    cell: ({ row }: { row: any }) => <DataTableRowActions row={row} />,
+    cell: ({ row }: { row: unknown }) => <DataTableRowActions row={row} />,
   },
 ];
 

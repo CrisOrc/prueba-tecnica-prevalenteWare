@@ -32,7 +32,7 @@ export const handler = startServerAndCreateNextHandler<
   NextRequest,
   GraphQLContext
 >(server, {
-  context: async (req) => {
+  context: async () => {
     const session = await getServerSession(authOptions);
     return { session };
   },

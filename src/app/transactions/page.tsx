@@ -1,9 +1,7 @@
 "use client";
 
 import MovementsTable from "@/components/tables/MovementsTable";
-import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 
 /**
  * Transactions Page Component.
